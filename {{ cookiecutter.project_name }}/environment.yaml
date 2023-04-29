@@ -1,4 +1,4 @@
-name: {{ coockiecutter.project_name }}
+name: {{ cookiecutter.project_name }}
 channels:
   - pytorch
   - nvidia
