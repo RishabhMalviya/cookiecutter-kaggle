@@ -1,2 +1,2 @@
-conda env create -f environment.yaml
+conda env create -f conda.yaml
 conda activate {{ cookiecutter.project_name }}
