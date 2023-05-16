@@ -5,11 +5,29 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.10.11=h7a1cb2a_2
-  - pytorch=2.0.0=py3.10_cuda11.8_cudnn8.7.0_0
-  - pytorch-cuda=11.8=h7e8668a_3
-  - scikit-learn=1.2.2=py310h6a678d5_0
-  - pandas=1.5.3=py310h1128e8f_0
-  - seaborn=0.12.2=py310h06a4308_0
-  - jupyter=1.0.0=py310h06a4308_8
-  - mlflow=2.3.1=py310ha13cd29_0
+  - python=3.10.11
+  - pip=22.0.4
+
+  # PyTorch
+  - pytorch=2.0.0
+  - torchvision=0.15.0
+  - pytorch-cuda=11.8
+
+  # PyTorch Extras
+  - lightning=2.0.2
+
+  # Data Science
+  - scikit-learn=1.2.2
+  - pandas=1.5.3
+  - seaborn=0.12.2
+
+  # Jupyter
+  - jupyter=1.0.0
+
+  # MLFlow
+  - mlflow=2.3.1
+
+  - pip:
+    # PyTorch Extras
+    - jsonargparse[signatures]==4.21.1
+    - tensorboard==2.13.0
