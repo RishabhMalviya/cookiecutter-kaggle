@@ -1,7 +1,7 @@
 from setuptools import setup
 
 
-with open('{{ cookiecutter.project_name }}/__init__.py') as f:
+with open('{{ cookiecutter.pkg_name }}/__init__.py') as f:
     info = {}
     for line in f:
         if line.startswith('version'):
@@ -10,10 +10,10 @@ with open('{{ cookiecutter.project_name }}/__init__.py') as f:
 
 
 setup_info = dict(
-    name='{{ cookiecutter.project_name }}',
+    name='{{ cookiecutter.project_slug }}',
     version=info['version'],
     author='{{ cookiecutter.author_name }}',
-    packages=['{{ cookiecutter.project_name }}']
+    packages=['{{ cookiecutter.pkg_name }}']
 )
 
 setup(**setup_info)

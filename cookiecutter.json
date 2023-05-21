@@ -1,4 +1,6 @@
 {
 	"project_name": "kaggle-competition",
-	"author_name": "Rishabh Malviya"
+	"author_name": "Rishabh Malviya",
+	"project_slug": "{{ cookiecutter.project_name|lower|replace(' ', '-') }}",
+	"pkg_name": "{{ cookiecutter.project_slug|replace('-', '_') }}"
 }
