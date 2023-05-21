@@ -31,3 +31,4 @@ dependencies:
     # PyTorch Extras
     - jsonargparse[signatures]==4.21.1
     - tensorboard==2.13.0
+    - rich==13.3.5
