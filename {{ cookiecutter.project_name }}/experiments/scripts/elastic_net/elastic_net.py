@@ -1,12 +1,17 @@
 import warnings
 warnings.filterwarnings("ignore")
 
-import mlflow
 import numpy as np
 from sklearn.datasets import load_diabetes
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import ElasticNet
+
+from {{ cookiecutter.pkg_name }}.mlflow_utils import setup_sklearn_mlflow
+
+
+EXPERIMENT_NAME = 'elastic_net'
+mlflow = setup_sklearn_mlflow(experiment_name=EXPERIMENT_NAME)
 
 
 def eval_metrics(actual, pred):
@@ -14,17 +19,15 @@ def eval_metrics(actual, pred):
     mlflow.log_metric("testing_rmse", rmse)
 
     mae = mean_absolute_error(actual, pred)
-    mlflow.log_metric("testing_r2", r2)
+    mlflow.log_metric("testing_r2", mae)
 
     r2 = r2_score(actual, pred)
-    mlflow.log_metric("testing_mae", mae)
+    mlflow.log_metric("testing_mae", r2)
 
     return rmse, mae, r2
 
 
 if __name__ == "__main__":
-    mlflow.autolog()
-
     dataset = load_diabetes(as_frame=True)
     X_train, X_test, y_train, y_test = train_test_split(dataset.data, dataset.target)
 

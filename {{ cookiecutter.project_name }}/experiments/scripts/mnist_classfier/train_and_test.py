@@ -14,29 +14,12 @@ from lightning.pytorch.callbacks import (
 
 from experiments.scripts.mnist_classfier.model import MNISTClassifier
 from experiments.scripts.mnist_classfier.data_module import MNISTDataModule
-from {{ cookiecutter.pkg_name }}.constants import (
-    TENSORBOARD_LOGGER_INDEX, MLFLOW_LOGGER_INDEX
-)
-from {{ cookiecutter.pkg_name }}.paths import EXPERIMENT_LOGS_DIR
+
+from {{ cookiecutter.pkg_name }}.mlflow_utils import get_lightning_mlflow_logger
 
 
 EXPERIMENT_NAME = 'mnist_classifier'
 
-
-def _configure_loggers():
-    loggers = [None, None]
-
-    loggers[TENSORBOARD_LOGGER_INDEX] = pl_loggers.TensorBoardLogger(
-        save_dir=EXPERIMENT_LOGS_DIR
-    )
-
-    loggers[MLFLOW_LOGGER_INDEX] = pl_loggers.MLFlowLogger(
-        experiment_name=EXPERIMENT_NAME,
-        tracking_uri=os.path.join(EXPERIMENT_LOGS_DIR, './mlruns'),
-        log_model=True
-    )
-
-    return loggers
 
 def _configure_callbacks():
     early_stopping = EarlyStopping(
@@ -68,7 +51,7 @@ def cli_main():
 
     trainer = Trainer(
         callbacks=_configure_callbacks(),
-        logger=_configure_loggers(),
+        logger=get_lightning_mlflow_logger(EXPERIMENT_NAME),
         max_epochs=10
     )
 
