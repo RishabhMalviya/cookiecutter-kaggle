@@ -1,0 +1,79 @@
+# pylint: disable=arguments-differ
+# pylint: disable=unused-argument
+# pylint: disable=abstract-method
+import warnings
+warnings.filterwarnings("ignore")
+
+import os
+
+from lightning.pytorch import Trainer
+import lightning.pytorch.loggers as pl_loggers
+from lightning.pytorch.callbacks import (
+    RichProgressBar, EarlyStopping, ModelCheckpoint
+)
+
+from experiments.scripts.mnist_classfier.model import MNISTClassifier
+from experiments.scripts.mnist_classfier.data_module import MNISTDataModule
+from {{ cookiecutter.pkg_name }}.constants import (
+    TENSORBOARD_LOGGER_INDEX, MLFLOW_LOGGER_INDEX
+)
+from {{ cookiecutter.pkg_name }}.paths import EXPERIMENT_LOGS_DIR
+
+
+EXPERIMENT_NAME = 'mnist_classifier'
+
+
+def _configure_loggers():
+    loggers = [None, None]
+
+    loggers[TENSORBOARD_LOGGER_INDEX] = pl_loggers.TensorBoardLogger(
+        save_dir=EXPERIMENT_LOGS_DIR
+    )
+
+    loggers[MLFLOW_LOGGER_INDEX] = pl_loggers.MLFlowLogger(
+        experiment_name=EXPERIMENT_NAME,
+        tracking_uri=os.path.join(EXPERIMENT_LOGS_DIR, './mlruns'),
+        log_model=True
+    )
+
+    return loggers
+
+def _configure_callbacks():
+    early_stopping = EarlyStopping(
+        monitor="val_loss",
+        mode='min',
+        patience=10,
+        stopping_threshold=0.05,
+        divergence_threshold=5.0
+    )
+
+    checkpoint_callback = ModelCheckpoint(
+        save_top_k=1, 
+        verbose=True, 
+        monitor="val_loss", 
+        mode="min"
+    )
+
+    callbacks = [
+        early_stopping,
+        checkpoint_callback,
+        RichProgressBar()
+    ]
+
+    return callbacks
+
+def cli_main():
+    model = MNISTClassifier()
+    data_module = MNISTDataModule()
+
+    trainer = Trainer(
+        callbacks=_configure_callbacks(),
+        logger=_configure_loggers(),
+        max_epochs=10
+    )
+
+    trainer.fit(model, datamodule=data_module)
+    trainer.test(ckpt_path="best", datamodule=data_module)
+
+if __name__ == "__main__":
+    cli_main()
