@@ -6,8 +6,6 @@ import lightning.pytorch as pl
 from torch.nn import functional as F
 from torchmetrics.functional import accuracy
 
-from {{ cookiecutter.pkg_name }}.constants import TENSORBOARD_LOGGER_INDEX
-
 
 class MNISTClassifier(pl.LightningModule):
     def _cross_entropy_loss(self, logits, labels):
@@ -144,11 +142,3 @@ class MNISTClassifier(pl.LightningModule):
         avg_test_acc = torch.stack(self.test_outputs).mean()
         self.log("avg_test_acc", avg_test_acc, sync_dist=True)
         self.test_outputs.clear()
-
-    def on_fit_end(self) -> None:
-        tensorboard_logger = self.loggers[TENSORBOARD_LOGGER_INDEX]
-
-        tensorboard_logger.log_graph(
-            model=self, 
-            input_array=torch.Tensor(32, 1, 28, 28)
-        )
