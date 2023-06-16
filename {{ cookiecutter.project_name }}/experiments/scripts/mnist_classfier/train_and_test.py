@@ -16,9 +16,10 @@ from experiments.scripts.mnist_classfier.model import MNISTClassifier
 from experiments.scripts.mnist_classfier.data_module import MNISTDataModule
 
 from {{ cookiecutter.pkg_name }}.mlflow_utils import get_lightning_mlflow_logger
+from {{ cookiecutter.pkg_name }}.paths import get_curr_dir
 
 
-EXPERIMENT_NAME = 'mnist_classifier'
+EXPERIMENT_NAME = get_curr_dir().upper()
 
 
 def _configure_callbacks():

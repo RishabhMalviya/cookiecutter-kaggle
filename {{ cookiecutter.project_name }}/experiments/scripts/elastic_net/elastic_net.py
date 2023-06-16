@@ -8,9 +8,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import ElasticNet
 
 from {{ cookiecutter.pkg_name }}.mlflow_utils import setup_sklearn_mlflow
+from {{ cookiecutter.pkg_name }}.paths import get_curr_dir
 
 
-EXPERIMENT_NAME = 'elastic_net'
+EXPERIMENT_NAME = get_curr_dir().upper()
 mlflow = setup_sklearn_mlflow(experiment_name=EXPERIMENT_NAME)
 
 

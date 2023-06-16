@@ -1,4 +1,6 @@
 import os
+import inspect
+from inspect import FrameInfo
 
 
 _curr_dir = os.path.dirname(os.path.abspath(__file__))
@@ -8,3 +10,10 @@ INTERMEDIATE_DATA_DIR = os.path.join(_curr_dir, '../data/2_intermediate')
 PROCESSED_DATA_DIR = os.path.join(_curr_dir, '../data/3_processed')
 
 EXPERIMENT_LOGS_DIR = os.path.join(_curr_dir, '../experiments/logs')
+
+
+def get_curr_dir():
+    caller_frame_info: FrameInfo = inspect.stack()[1]
+    caller_abs_path = caller_frame_info.filename
+    
+    return os.path.basename(os.path.dirname(caller_abs_path))
