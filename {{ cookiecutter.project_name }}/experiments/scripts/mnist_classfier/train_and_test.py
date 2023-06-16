@@ -38,13 +38,12 @@ def _configure_callbacks():
         mode="min"
     )
 
-    callbacks = [
+    return [
         early_stopping,
         checkpoint_callback,
         RichProgressBar()
     ]
 
-    return callbacks
 
 def cli_main():
     model = MNISTClassifier()
