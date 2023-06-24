@@ -32,10 +32,12 @@ def _configure_callbacks():
     )
 
     checkpoint_callback = ModelCheckpoint(
-        save_top_k=1, 
-        verbose=True, 
+        save_top_k=2,
+        save_last=True,
         monitor="val_loss", 
-        mode="min"
+        mode="min",
+        verbose=True,
+        filename='{epoch}-{val_loss:.2f}'
     )
 
     return [

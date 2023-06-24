@@ -4,6 +4,9 @@ mamba activate {{ cookiecutter.project_name }} && \
 pip install -e .
 
 
+aws s3api create-bucket --bucket {{ cookiecutter.s3_bucket_name }} --region us-west-1
+
+
 ########################################################
 # Manual install steps, in case the above hangs
 ########################################################

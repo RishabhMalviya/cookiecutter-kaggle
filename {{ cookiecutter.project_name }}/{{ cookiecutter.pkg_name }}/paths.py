@@ -3,6 +3,9 @@ import inspect
 from inspect import FrameInfo
 
 
+s3_bucket_name = {{ cookiecutter.s3_bucket_name }}
+
+
 _curr_dir = os.path.dirname(os.path.abspath(__file__))
 
 RAW_DATA_DIR = os.path.join(_curr_dir, '../data/1_raw')

@@ -1,6 +1,8 @@
 {
 	"project_name": "ck-kaggle",
 	"author_name": "Rishabh Malviya",
+	"organization_name": "The Long-Termists",
 	"project_slug": "{{ cookiecutter.project_name|lower|replace(' ', '-') }}",
-	"pkg_name": "{{ cookiecutter.project_slug|replace('-', '_') }}"
+	"pkg_name": "{{ cookiecutter.project_slug|replace('-', '_') }}",
+	"s3_bucket_name": "{{ cookiecutter.organization_name|lower|replace(' ', '-') }}---{{ cookiecutter.project_slug }}"
 }
