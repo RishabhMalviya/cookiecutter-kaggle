@@ -5,5 +5,5 @@
 	"project_slug": "{{ cookiecutter.project_name|lower|replace(' ', '-') }}",
 	"pkg_name": "{{ cookiecutter.project_slug|replace('-', '_') }}",
 	"s3_bucket_name": "{{ cookiecutter.organization_name|lower|replace(' ', '-') }}---{{ cookiecutter.project_slug }}",
-	"git_repo_ssh_url": "git@github.com:RishabhMalviya/non-existent-repo.git"
+	"git_repo_ssh_url": "git@github.com:{{ cookiecutter.organization_name|replace(' ', '') }}/{{ cookiecutter.project_name }}.git"
 }
