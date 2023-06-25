@@ -8,14 +8,18 @@ from mlflow.exceptions import MlflowException
 from {{ cookiecutter.pkg_name }}.paths import EXPERIMENT_LOGS_DIR, s3_bucket_name
 
 
-def get_lightning_mlflow_logger(experiment_name: str, _run_name: str = None) -> pl_loggers.MLFlowLogger:
+def get_lightning_mlflow_logger(experiment_name: str, entrypoint_script: str, git_hash: str) -> pl_loggers.MLFlowLogger:    
     return pl_loggers.MLFlowLogger(
         experiment_name=experiment_name,
-        run_name=_run_name,
+        tags={
+            'entrypoint_script': entrypoint_script,
+            'git_hash': git_hash
+        },
         tracking_uri=os.path.join(EXPERIMENT_LOGS_DIR, './mlruns'),
         log_model=True,
         artifact_location=f's3://{s3_bucket_name}/{experiment_name}/'
     )
+
 
 def setup_sklearn_mlflow(experiment_name: str) -> str:    
     mlflow.set_tracking_uri(os.path.join(EXPERIMENT_LOGS_DIR, './mlruns'))
