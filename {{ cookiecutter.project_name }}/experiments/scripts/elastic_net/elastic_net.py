@@ -42,9 +42,3 @@ if __name__ == "__main__":
 
         y_pred = model.predict(X_test)
         (rmse, mae, r2) = eval_metrics(y_test, y_pred)
-
-        mlflow.sklearn.log_model(
-            sk_model=model,
-            artifact_path="sklearn-model",
-            registered_model_name="elastic-net",
-        )
