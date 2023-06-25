@@ -1,6 +1,5 @@
 import warnings
 warnings.filterwarnings("ignore")
-from datetime import datetime
 
 import numpy as np
 from sklearn.datasets import load_diabetes
@@ -33,7 +32,7 @@ if __name__ == "__main__":
     dataset = load_diabetes(as_frame=True)
     X_train, X_test, y_train, y_test = train_test_split(dataset.data, dataset.target)
 
-    with mlflow.start_run(run_name=datetime.now().isoformat()):
+    with mlflow.start_run():
         alpha, l1_ratio = 0.5, 0.5
         model = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, random_state=42)
         mlflow.log_param("alpha", alpha)

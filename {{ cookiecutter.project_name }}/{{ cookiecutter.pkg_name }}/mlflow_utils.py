@@ -1,6 +1,5 @@
 import os
 import logging
-from datetime import datetime
 
 import lightning.pytorch.loggers as pl_loggers
 import mlflow 
@@ -10,8 +9,6 @@ from {{ cookiecutter.pkg_name }}.paths import EXPERIMENT_LOGS_DIR, s3_bucket_nam
 
 
 def get_lightning_mlflow_logger(experiment_name: str, _run_name: str = None) -> pl_loggers.MLFlowLogger:
-    _run_name = _run_name or datetime.now().isoformat()
-    
     return pl_loggers.MLFlowLogger(
         experiment_name=experiment_name,
         run_name=_run_name,
