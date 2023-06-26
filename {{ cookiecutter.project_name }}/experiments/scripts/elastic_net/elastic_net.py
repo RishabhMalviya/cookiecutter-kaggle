@@ -9,7 +9,7 @@ from sklearn.linear_model import ElasticNet
 
 from {{ cookiecutter.pkg_name }}.mlflow_utils import setup_sklearn_mlflow
 from {{ cookiecutter.pkg_name }}.paths import get_curr_dir
-from {{ cookiecutter.pkg_name }}.git_utils import check_repo_is_in_sync, git_commit_latest_experiment
+from {{ cookiecutter.pkg_name }}.git_utils import check_repo_is_in_sync, commit_latest_run
 
 
 EXPERIMENT_NAME = get_curr_dir().upper()
@@ -48,4 +48,4 @@ def main():
 if __name__ == "__main__":
     check_repo_is_in_sync()
     main()
-    git_commit_latest_experiment(EXPERIMENT_NAME, mlflow.last_active_run())
+    commit_latest_run(EXPERIMENT_NAME, mlflow.last_active_run())
