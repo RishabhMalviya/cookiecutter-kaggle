@@ -4,6 +4,7 @@ channels:
   - nvidia
   - conda-forge
   - defaults
+  - anaconda
 dependencies:
   - python=3.10.11
   - pip=22.0.4
@@ -26,6 +27,7 @@ dependencies:
 
   # MLFlow
   - mlflow=2.3.1
+  - boto3=1.24.28
 
   - pip:
     # PyTorch Extras
