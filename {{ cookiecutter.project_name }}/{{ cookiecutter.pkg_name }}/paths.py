@@ -3,7 +3,7 @@ import inspect
 from inspect import FrameInfo
 
 
-s3_bucket_name = {{ cookiecutter.s3_bucket_name }}
+s3_bucket_name = '{{ cookiecutter.s3_bucket_name }}'
 
 _curr_dir = os.path.dirname(os.path.abspath(__file__))
 
