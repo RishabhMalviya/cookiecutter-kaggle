@@ -1,3 +1,5 @@
+Run `source setup.sh` to set things up.
+
 # Usage Instructions
 1. Run whatever experiment you want with a command like `python ./experiments/scripts/<experiment-name>/<main-script>`. If you've built off of the base examples in the cookiecutter project, it should save everything to MLFlow logs under the `experiments/logs/mlruns` directory.
 2. To access the MLFlow UI, preferably run `mlflow ui` from the the `experiments/logs` directory. Running the command from other directories will pollute your file structure with stray `mlruns` directories.
