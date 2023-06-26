@@ -29,7 +29,7 @@ def check_repo_is_in_sync():
 
 def commit_latest_run(experiment_name, mlflow_run: Run = None):
     run_name = mlflow_run.info.run_name
-    end_time =  datetime.utcfromtimestamp(int(mlflow_run.info.end_time)).isoformat()
+    end_time =  datetime.fromtimestamp(mlflow_run.info.end_time / 1000.0).isoformat()  # MLFlow end_time is milliseconds since UNIX epoch
 
     commit_message = f'Log run {run_name}, completed on {end_time} under {experiment_name}'
 
