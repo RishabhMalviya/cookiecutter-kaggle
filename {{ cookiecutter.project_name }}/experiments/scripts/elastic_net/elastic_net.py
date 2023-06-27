@@ -1,5 +1,6 @@
 import warnings
 warnings.filterwarnings("ignore")
+import sys
 
 import numpy as np
 from sklearn.datasets import load_diabetes
@@ -9,7 +10,7 @@ from sklearn.linear_model import ElasticNet
 
 from {{ cookiecutter.pkg_name }}.mlflow_utils import setup_sklearn_mlflow
 from {{ cookiecutter.pkg_name }}.paths import get_curr_dir, get_curr_filename
-from {{ cookiecutter.pkg_name }}.git_utils import check_repo_is_in_sync, commit_latest_run
+from {{ cookiecutter.pkg_name }}.git_utils import check_repo_is_in_sync, commit_latest_run, GitOutOfSyncError
 
 
 EXPERIMENT_NAME = get_curr_dir().upper()
@@ -46,7 +47,10 @@ def main(tags):
 
 
 if __name__ == "__main__":
-    current_git_hash = check_repo_is_in_sync()
+    try:
+        current_git_hash = check_repo_is_in_sync()
+    except GitOutOfSyncError as e:
+        sys.exit(e)
 
     tags = {
         'entrypoint_script': get_curr_filename(),

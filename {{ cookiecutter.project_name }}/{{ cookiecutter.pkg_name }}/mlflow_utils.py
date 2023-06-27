@@ -1,26 +1,28 @@
 import os
-from os.path import dirname
-import shutil
 import logging
+import shutil
 
-import mlflow
+import mlflow 
 from mlflow.exceptions import MlflowException
 from lightning.pytorch import Trainer, LightningModule
-import lightning.pytorch.loggers as pl_loggers
 from lightning.pytorch.callbacks import ModelCheckpoint
+import lightning.pytorch.loggers as pl_loggers
 
 from {{ cookiecutter.pkg_name }}.paths import EXPERIMENT_LOGS_DIR, s3_bucket_name
 
 
 class ModelCheckpointWithCleanupCallback(ModelCheckpoint):
     def on_test_end(self, trainer: Trainer, pl_module: LightningModule) -> None:
-        super().on_test_end(trainer, pl_module)
-        shutil.rmtree(dirname(dirname(self.dirpath)))
+        shutil.rmtree(os.path.dirname(os.path.dirname(self.dirpath)))
 
 
-def get_lightning_mlflow_logger(experiment_name: str) -> pl_loggers.MLFlowLogger:    
+def get_lightning_mlflow_logger(experiment_name: str, entrypoint_script: str, git_hash: str) -> pl_loggers.MLFlowLogger:    
     return pl_loggers.MLFlowLogger(
         experiment_name=experiment_name,
+        tags={
+            'entrypoint_script': entrypoint_script,
+            'git_hash': git_hash
+        },
         tracking_uri=os.path.join(EXPERIMENT_LOGS_DIR, './mlruns'),
         log_model=True,
         artifact_location=f's3://{s3_bucket_name}/{experiment_name}/'

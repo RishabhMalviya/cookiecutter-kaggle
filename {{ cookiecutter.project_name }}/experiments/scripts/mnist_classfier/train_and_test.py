@@ -3,11 +3,11 @@
 # pylint: disable=abstract-method
 import warnings
 warnings.filterwarnings("ignore")
-import os
+import sys
 
 from lightning.pytorch import Trainer
 from lightning.pytorch.callbacks import (
-    RichProgressBar, EarlyStopping
+    RichProgressBar, EarlyStopping, ModelCheckpoint
 )
 
 from experiments.scripts.mnist_classfier.model import MNISTClassifier
@@ -15,20 +15,14 @@ from experiments.scripts.mnist_classfier.data_module import MNISTDataModule
 
 from {{ cookiecutter.pkg_name }}.mlflow_utils import get_lightning_mlflow_logger, ModelCheckpointWithCleanupCallback
 from {{ cookiecutter.pkg_name }}.paths import get_curr_dir, get_curr_filename
-from {{ cookiecutter.pkg_name }}.git_utils import (
-    RepoSyncCheckCallback, CommitLatestRunCallback
-)
+from {{ cookiecutter.pkg_name }}.git_utils import check_repo_is_in_sync, commit_latest_run, GitOutOfSyncError
 
 
 EXPERIMENT_NAME = get_curr_dir().upper()
 
 
 def _configure_callbacks():
-    repo_sync_check_callback = RepoSyncCheckCallback(
-        entrypoint_script=get_curr_filename()
-    )
-
-    early_stopping = EarlyStopping(
+    early_stopping_callback = EarlyStopping(
         monitor="val_loss",
         mode='min',
         patience=10,
@@ -36,7 +30,7 @@ def _configure_callbacks():
         divergence_threshold=5.0
     )
 
-    model_checkpointing_callback = ModelCheckpointWithCleanupCallback(
+    checkpoint_callback = ModelCheckpointWithCleanupCallback(
         save_top_k=2,
         save_last=True,
         monitor="val_loss", 
@@ -45,27 +39,21 @@ def _configure_callbacks():
         filename='{epoch}-{val_loss:.2f}'
     )
 
-    commit_latest_run_callback = CommitLatestRunCallback(
-        experiment_name=EXPERIMENT_NAME
-    )
-
     return [
-        repo_sync_check_callback,
-        early_stopping,
-        model_checkpointing_callback,
-        RichProgressBar(),
-        commit_latest_run_callback
+        early_stopping_callback,
+        checkpoint_callback,
+        RichProgressBar()
     ]
 
 
-def cli_main():
+def cli_main(_mlflow_logger):
     model = MNISTClassifier()
     data_module = MNISTDataModule()
 
     trainer = Trainer(
         callbacks=_configure_callbacks(),
-        logger=get_lightning_mlflow_logger(EXPERIMENT_NAME),
-        max_epochs=1
+        logger=_mlflow_logger,
+        max_epochs=10
     )
 
     trainer.fit(model, datamodule=data_module)
@@ -73,4 +61,12 @@ def cli_main():
 
 
 if __name__ == "__main__":
-    cli_main()
+    try:
+        current_git_hash = check_repo_is_in_sync()
+    except GitOutOfSyncError as e:
+        sys.exit(e)
+
+    mlflow_logger = get_lightning_mlflow_logger(EXPERIMENT_NAME, get_curr_filename(), current_git_hash)
+    cli_main(mlflow_logger)
+
+    commit_latest_run(EXPERIMENT_NAME, mlflow_logger.experiment.get_run(mlflow_logger._run_id))
