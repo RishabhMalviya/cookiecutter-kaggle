@@ -42,7 +42,7 @@ def commit_latest_run(experiment_name, mlflow_run: Run = None):
     run_name = mlflow_run.info.run_name
     end_time =  datetime.fromtimestamp(mlflow_run.info.end_time / 1000.0).isoformat()  # MLFlow end_time is milliseconds since UNIX epoch
 
-    commit_message = f'Log run {run_name}, completed on {end_time} under {experiment_name}'
+    commit_message = f'Log run {run_name} under {experiment_name}, completed on {end_time}'
 
     git_add_output = _git("add", EXPERIMENT_LOGS_DIR, '.')
     print(git_add_output)
