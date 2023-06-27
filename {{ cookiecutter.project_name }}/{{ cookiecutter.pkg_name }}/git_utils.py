@@ -19,7 +19,7 @@ def _get_current_hash():
 
 
 def check_repo_is_in_sync():
-    are_un_tracked_changes = not (len(_git("ls-files", " --others", "--exclude-standard")) == 0)
+    are_un_tracked_changes = not (len(_git("ls-files", "--others", "--exclude-standard")) == 0)
     if are_un_tracked_changes:
         raise GitOutOfSyncError('You have un-tracked changes.\n'
                                 'Make sure you are in sync with the remote Git repo before running an experiment.')
