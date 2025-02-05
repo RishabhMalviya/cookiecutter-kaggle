@@ -1,0 +1,44 @@
+[project]
+name = "{{ cookiecutter.project_name }}"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "{{ cookiecutter.author_name }}", email = "{{ cookiecutter.email }}"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dynamic = [ "dependencies" ]
+
+
+[tool.poetry.dependencies]
+# PyTorch
+torch = { version = "2.6.0", source = "pytorch-cuda11.8" }
+
+# PyTorch Extras
+lightning = "^2.5.0.post0"
+jsonargparse = {extras = ["signatures"], version = "^4.36.0"}
+tensorboard = "^2.18.0"
+rich = "^13.9.4"
+
+# Data Science
+scikit-learn = "^1.6.1"
+pandas = "^2.2.3"
+seaborn = "^0.13.2"
+
+# MLFlow
+mlflow = "^2.20.1"
+boto3 = "^1.36.13"
+
+# Jupyter
+jupyter = { version = "1.0.0" }
+
+
+[[tool.poetry.source]]
+name = "pytorch-cuda11.8"
+url = "https://download.pytorch.org/whl/cu118"
+priority = "explicit"
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
