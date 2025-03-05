@@ -8,7 +8,8 @@ echo -e "\nInstalling pre-prequisites for pyenv/python...\n----------------"
 sudo apt update
 sudo apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl git libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 
-# curl -fsSL https://pyenv.run | bash
+echo -e"\nInstalling pyenv...\n------------------"
+curl -fsSL https://pyenv.run | bash
 
 echo -e "\nSetting up pyenv in bashrc...\n----------------"
 if ! grep -q 'export PATH="$HOME/.pyenv/bin:$PATH"' ~/.bashrc; then
