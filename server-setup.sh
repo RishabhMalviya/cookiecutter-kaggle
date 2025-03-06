@@ -83,6 +83,7 @@ echo "Cloning the cookiecutter GitHub repository...\n-----------------"
 git clone git@github.com:RishabhMalviya/cookiecutter-kaggle.git
 
 
+# Echo final steps
 echo "Setup complete!"
 cat << 'EOF'
 
