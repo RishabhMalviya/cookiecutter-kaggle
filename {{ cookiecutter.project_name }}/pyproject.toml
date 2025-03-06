@@ -10,6 +10,9 @@ requires-python = "3.12.9"
 dynamic = [ "dependencies" ]
 
 
+########################
+# Prod Dependencies
+########################
 [tool.poetry.dependencies]
 # PyTorch
 torch = { version = "2.6.0", source = "pytorch-cuda11.8" }
@@ -17,20 +20,38 @@ torch = { version = "2.6.0", source = "pytorch-cuda11.8" }
 # PyTorch Extras
 lightning = "^2.5.0.post0"
 jsonargparse = {extras = ["signatures"], version = "^4.36.0"}
-tensorboard = "^2.18.0"
-rich = "^13.9.4"
 
 # Data Science
 scikit-learn = "^1.6.1"
+
+########################
+# Dev Dependencies
+########################
+[tool.poetry.group.dev.dependencies]
+# Data Science
 pandas = "^2.2.3"
 seaborn = "^0.13.2"
 
+# Jupyter
+jupyter = { version = "1.0.0" }
+
+[tool.poetry.group.dev]
+optional = true
+
+########################
+# Train Dependencies
+########################
+[tool.poetry.group.training.dependencies]
 # MLFlow
 mlflow = "^2.20.1"
 boto3 = "^1.36.13"
 
-# Jupyter
-jupyter = { version = "1.0.0" }
+# PyTorch Extras
+tensorboard = "^2.18.0"
+rich = "^13.9.4"
+
+[tool.poetry.group.training]
+optional = true
 
 
 [[tool.poetry.source]]
