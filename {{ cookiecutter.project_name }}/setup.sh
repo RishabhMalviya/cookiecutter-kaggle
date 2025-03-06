@@ -1,5 +1,5 @@
 pyenv install --skip-existing
-poetry install --with dev
+poetry install
 
 aws s3 mb s3://{{ cookiecutter.s3_bucket_name }} --region us-west-1
 
