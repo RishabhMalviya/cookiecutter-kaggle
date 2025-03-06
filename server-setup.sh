@@ -4,55 +4,71 @@ set -e
 cd ~
 
 # Install pyenv
-echo -e "\nInstalling pre-prequisites for pyenv/python...\n----------------"
-sudo apt update
-sudo apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl git libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+if ! command -v pyenv &> /dev/null; then
+        echo -e "\nInstalling pre-prequisites for pyenv/python...\n----------------"
+        sudo apt update
+        sudo apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl git libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 
-echo -e"\nInstalling pyenv...\n------------------"
-curl -fsSL https://pyenv.run | bash
+        echo -e"\nInstalling pyenv...\n------------------"
+        curl -fsSL https://pyenv.run | bash
 
-echo -e "\nSetting up pyenv in bashrc...\n----------------"
-if ! grep -q 'export PATH="$HOME/.pyenv/bin:$PATH"' ~/.bashrc; then
-  echo -e '\n# Pyenv setup' >> ~/.bashrc
-  echo 'export PATH="$HOME/.pyenv/bin:$PATH"' >> ~/.bashrc
-  echo 'eval "$(pyenv init --path)"' >> ~/.bashrc
-  echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc
+        echo -e "\nSetting up pyenv in bashrc...\n----------------"
+        if ! grep -q 'export PATH="$HOME/.pyenv/bin:$PATH"' ~/.bashrc; then
+                echo -e '\n# Pyenv setup' >> ~/.bashrc
+                echo 'export PATH="$HOME/.pyenv/bin:$PATH"' >> ~/.bashrc
+                echo 'eval "$(pyenv init --path)"' >> ~/.bashrc
+                echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc
+        fi
+        source ~/.bashrc
+else
+        echo -e "Pyenv is already installed\n--------------"
 fi
-source ~/.bashrc
 
 echo -e "\nInstalling and setting global python to version 3.10.11 with pyenv...\n----------------"
 pyenv install 3.10.11
 pyenv global 3.10.11
 
 # Install poetry
-echo -e "Installing pipx...\n-----------------"
-sudo apt update
-sudo apt install -y pipx
-pipx ensurepath
-source ~/.bashrc
+if ! command -v poetry &> /dev/null; then
+        echo -e "Installing pipx...\n-----------------"
+        sudo apt update
+        sudo apt install -y pipx
+        pipx ensurepath
+        source ~/.bashrc
 
-echo -e "Installing poetry...\n-----------------"
-pipx install poetry
+        echo -e "Installing poetry...\n-----------------"
+        pipx install poetry
+else
+        echo -e "Poetry is already installed\n--------------"
+fi
 
 # Install cookiectter
-echo -e "Setting cookiecutter path...\n-----------------"
-echo -e '\n# cookiecutter setup' >> ~/.bashrc
-echo 'export PATH=$HOME/.local/bin:$PATH' >> ~/.bashrc
+if ! command -v cookiecutter &> /dev/null; then
+        echo -e "Setting cookiecutter path...\n-----------------"
+        echo -e '\n# cookiecutter setup' >> ~/.bashrc
+        echo 'export PATH=$HOME/.local/bin:$PATH' >> ~/.bashrc
 
-echo -e "Installing cookiecutter...\n-----------------"
-python3 -m pip install --user cookiecutter
+        echo -e "Installing cookiecutter...\n-----------------"
+        python3 -m pip install --user cookiecutter
+else
+        echo -e "cookiecutter is already installed\n--------------"
+fi
 
 # Install AWS CLI
-echo -e "Installing pre-requisites for AWS CLI...\n-----------------"
-sudo apt update
-sudo apt install -y groff less unzip
+if ! command -v aws &> /dev/null; then
+        echo -e "Installing pre-requisites for AWS CLI...\n-----------------"
+        sudo apt update
+        sudo apt install -y groff less unzip
 
-echo -e "Installing AWS CLI v2...\n-----------------"
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip awscliv2.zip
-rm ./awscliv2.zip
-sudo ./aws/install
-rm -rf ./aws/
+        echo -e "Installing AWS CLI v2...\n-----------------"
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+        unzip awscliv2.zip
+        rm ./awscliv2.zip
+        sudo ./aws/install
+        rm -rf ./aws/
+else
+        echo -e "AWS CLI is already installed.\n-----------------"
+fi
 
 echo -e "Creating IAM profile...\n-----------------"
 mkdir -p ~/.aws
@@ -98,6 +114,7 @@ Now you just need to do two things:
     }
     ```
 -----------------
+
 EOF
 
 aws s3 ls
