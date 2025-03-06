@@ -15,7 +15,7 @@ dynamic = [ "dependencies" ]
 ########################
 [tool.poetry.dependencies]
 # PyTorch
-torch = { version = "2.6.0", source = "pytorch-cuda11.8" }
+torch = { version = "2.6.0", source = "pytorch-cuda12.4" }
 
 # PyTorch Extras
 lightning = "^2.5.0.post0"
@@ -55,10 +55,9 @@ optional = true
 
 
 [[tool.poetry.source]]
-name = "pytorch-cuda11.8"
-url = "https://download.pytorch.org/whl/cu118"
+name = "pytorch-cuda12.4"
+url = "https://download.pytorch.org/whl/cu124"
 priority = "explicit"
-
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
