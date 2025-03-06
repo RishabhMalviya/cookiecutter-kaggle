@@ -82,4 +82,21 @@ source ~/.bashrc
 echo "Cloning the cookiecutter GitHub repository...\n-----------------"
 git clone git@github.com:RishabhMalviya/cookiecutter-kaggle.git
 
+
 echo "Setup complete!"
+cat << 'EOF'
+
+-----------------
+Now you just need to do two things:
+1. The first is to attach the 'ec2-instance-iam-role' IAM role to this EC2 instance
+2. The second is to update the IAM role's trust policy. You'll see an error message after this. Add the user in the that error message as a 'Principal' in the trust policy of the 'ec2-instance-iam-role' IAM role:
+    ```
+    "Principal": {
+      "Service": "ec2.amazonaws.com",
+      "AWS": "arn:aws:sts::960710833509:assumed-role/ec2-instance-iam-role/i-0ebf3bb7d0d881d3d"
+    }
+    ```
+-----------------
+EOF
+
+aws s3 ls
