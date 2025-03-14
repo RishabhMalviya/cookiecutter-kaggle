@@ -19,4 +19,4 @@ fi
 
 # Initialize python virtual environment
 pyenv install --skip-existing
-poetry install --all-groups
+export POETRY_VIRTUALENVS_IN_PROJECT=true && poetry install --all-groups
