@@ -16,6 +16,7 @@ dynamic = [ "dependencies" ]
 [tool.poetry.dependencies]
 # PyTorch
 torch = { version = "2.6.0", source = "pytorch-cuda12.4" }
+torchvision = { version = "0.21.0", source = "pytorch-cuda12.4" }
 
 # PyTorch Extras
 lightning = "^2.5.0.post0"
